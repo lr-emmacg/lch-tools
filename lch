@@ -18,7 +18,26 @@ if [ ${#MATCHES[@]} -eq 0 ]; then
 fi
 
 #matches
-echo "Found environment: ${MATCHES[0]}"
+echo "Found the following environments for $ACCOUNT_UPPER:"
+
+#returns array
+for i in "${!MATCHES[@]}"; do
+    echo "$((i+1))) ${MATCHES[$i]}"
+done
+
+#select one
+read -p "Choose Environment [1-${#MATCHES[@]}]: " ENV_IDX
+
+#validate
+if [[ "$ENV_IDX" -lt 1 || "$ENV_IDX" -gt ${#MATCHES[@]} ]]; then
+    echo "Invalid selection. Exiting."
+    exit 1
+fi
+
+#setting the env
+SELECTED_ENV=${MATCHES[$((ENV_IDX-1))]}
+
+echo "You selected: $SELECTED_ENV"
 
 # 4. Ask for maintenance window (optional)
 # 5. Ask for requests (optional)
