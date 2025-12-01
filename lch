@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# 1. Ask for Support Account Code
+# 2. Find matching rows in CSV
+# 3. List environments and ask user to choose
+# 4. Ask for maintenance window (optional)
+# 5. Ask for requests (optional)
+# 6. Print to terminal 
