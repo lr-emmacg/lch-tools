@@ -39,6 +39,23 @@ SELECTED_ENV=${MATCHES[$((ENV_IDX-1))]}
 
 echo "You selected: $SELECTED_ENV"
 
-# 4. Ask for maintenance window (optional)
-# 5. Ask for requests (optional)
+# find the line in the csv based on the user imput
+LINE_NUM=$(awk -F',' -v env="$SELECTED_ENV" '$3 == env {print NR}' "$CSV_FILE")
+
+# extract the fields based on the env string
+DXPC_PROJECT=$(awk -F',' "NR==$LINE_NUM {print \$3}" "$CSV_FILE")
+MW_DAY=$(awk -F',' "NR==$LINE_NUM {print \$6}" "$CSV_FILE")
+MW_TIME=$(awk -F',' "NR==$LINE_NUM {print \$7}" "$CSV_FILE")
+
+# 4. Build the LCH template
+# title input
+
+
+# ticket context
+
+# numbered requests (optional) already pulled
+
+# maintenace window (optional) already pulled
+
+
 # 6. Print to terminal 
