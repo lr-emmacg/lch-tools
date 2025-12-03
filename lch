@@ -48,13 +48,19 @@ MW_DAY=$(awk -F',' "NR==$LINE_NUM {print \$6}" "$CSV_FILE")
 MW_TIME=$(awk -F',' "NR==$LINE_NUM {print \$7}" "$CSV_FILE")
 
 # 4. Build the LCH template
-# title input (should already include 'lxc<cluster>-<clusterEnv> - ')
+# title input (later it will automatically include 'lxc<cluster>-<clusterEnv> - ')
+read -p "Enter LCH title: " TITLE
 
 # ticket context
+read -p "Enter context for the LCH: " CONTEXT
+
 
 # numbered requests (optional)
+read -p "Enter a request (or press Enter to skip): " REQUEST
 
-# maintenace window (optional) already pulled
+
+# maintenance window (optional) already pulled
+read -p "Include maintenance window? (or press Enter to skip): " MW_INCLUDE
 
 
 # 6. Print to terminal 
