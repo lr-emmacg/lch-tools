@@ -43,6 +43,7 @@ echo "You selected: $SELECTED_ENV"
 LINE_NUM=$(awk -F',' -v env="$SELECTED_ENV" '$3 == env {print NR}' "$CSV_FILE")
 
 # extract the fields based on the env string
+CLUSTER=$(awk -F',' "NR==$LINE_NUM {print \$1}" "$CSV_FILE")
 DXPC_PROJECT=$(awk -F',' "NR==$LINE_NUM {print \$3}" "$CSV_FILE")
 MW_DAY=$(awk -F',' "NR==$LINE_NUM {print \$6}" "$CSV_FILE")
 MW_TIME=$(awk -F',' "NR==$LINE_NUM {print \$7}" "$CSV_FILE")
@@ -56,11 +57,37 @@ read -p "Enter context for the LCH: " CONTEXT
 
 
 # numbered requests (optional)
-read -p "Enter a request (or press Enter to skip): " REQUEST
-
+REQUESTS=()
+while true; do
+    read -p "Enter a request (or press Enter to skip): " REQ
+    [[ -z "$REQ" ]] && break # stop when no input
+    REQUESTS+=("$REQ")
+done
 
 # maintenance window (optional) already pulled
-read -p "Include maintenance window? (or press Enter to skip): " MW_INCLUDE
-
+read -p "Include maintenance window? [y/N] (or press Enter to skip): " MW_INCLUDE
+MW_SECTION=""
+if [[ ! -z "$MW_INCLUDE" && "$MW_INCLUDE" =~ ^[yY] ]]; then
+    MW_SECTION="h3. *Maintenance Window:*\n* Day: $MW_DAY\n* Time: $MW_TIME UTC"
+fi
 
 # 6. Print to terminal 
+FULL_CODE="lxc${CLUSTER}-${DXPC_PROJECT}"
+echo ""
+echo "$FULL_CODE - $TITLE"
+echo ""
+echo "Hi team,"
+echo ""
+echo "$CONTEXT"
+echo ""
+echo "h3. *Request(s):*"
+# req if statement
+echo ""
+# mw if statement
+echo ""
+
+echo "h3. *URL(s):*"
+echo "* [Cloud Console|https://console.liferay.cloud/projects/$FULL_CODE/overview]"
+# echo "[Hotfix URL|hotfixURLlink] if blank skip" <needs to be added earlier.
+echo ""
+echo "Please reach out with any questions"
