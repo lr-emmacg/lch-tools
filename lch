@@ -55,7 +55,6 @@ read -p "Enter LCH title: " TITLE
 # ticket context
 read -p "Enter context for the LCH: " CONTEXT
 
-
 # numbered requests (optional)
 REQUESTS=()
 while true; do
@@ -63,6 +62,9 @@ while true; do
     [[ -z "$REQ" ]] && break # stop when no input
     REQUESTS+=("$REQ")
 done
+
+#include hotfix link
+read -p "Paste a hotfix link if needed (or press Enter to skip): " HOTFIX
 
 # maintenance window (optional) already pulled
 read -p "Include maintenance window? [y/N] (or press Enter to skip): " MW_INCLUDE
@@ -82,12 +84,29 @@ echo "$CONTEXT"
 echo ""
 echo "h3. *Request(s):*"
 # req if statement
-echo ""
+if [[ ${#REQUESTS[@]} -eq 0 ]]; then
+    echo "See context above."
+else
+    for r in "${REQUESTS[@]}"; do
+        echo "* $r"
+    done
+fi
+
 # mw if statement
 echo ""
-
+if [[ ! -z "$MW_SECTION" ]]; then
+    echo -e "$MW_SECTION"
+    echo ""
+fi
 echo "h3. *URL(s):*"
 echo "* [Cloud Console|https://console.liferay.cloud/projects/$FULL_CODE/overview]"
-# echo "[Hotfix URL|hotfixURLlink] if blank skip" <needs to be added earlier.
+
+# hotfix link
 echo ""
+if [[ -n "$HOTFIX" ]]; then 
+    echo "* [Hotfix|$HOTFIX]"
+fi
+
+echo ""
+
 echo "Please reach out with any questions"
